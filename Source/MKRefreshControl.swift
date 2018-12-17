@@ -50,7 +50,7 @@ open class MKRefreshControl: UIControl {
         self.refreshBlock = block
         if let parentScrollView = self.parentScrollView {
             parentScrollView.addSubview(self)
-            parentScrollView.sendSubview(toBack: self)
+            parentScrollView.sendSubviewToBack(self)
             parentScrollView.panGestureRecognizer.addTarget(self, action: #selector(MKRefreshControl.handlePanGestureRecognizer))
             parentScrollView.addObserver(self, forKeyPath: "contentOffset", options: .new, context: nil)
         }
@@ -81,7 +81,7 @@ open class MKRefreshControl: UIControl {
         self.backgroundColor = UIColor.white
 
         self.rotation = 0
-        self.rotationIncrement = CGFloat(14 * M_PI / 8.0)
+        self.rotationIncrement = CGFloat(14 * .pi / 8.0)
         self.radius = 15.0
         let center = CGPoint(x: UIScreen.main.bounds.width / 2, y: self.height / 2)
 
@@ -92,7 +92,7 @@ open class MKRefreshControl: UIControl {
             animationView.addSubview(circleView)
 
             let circleViewCenter = CGPoint(x: self.radius, y: self.radius)
-            self.progressPath = UIBezierPath(arcCenter: circleViewCenter, radius: self.radius, startAngle: CGFloat(-M_PI), endAngle: CGFloat(M_PI), clockwise: true)
+            self.progressPath = UIBezierPath(arcCenter: circleViewCenter, radius: self.radius, startAngle: -.pi, endAngle: .pi, clockwise: true)
             self.progressLayer = CAShapeLayer()
             if let progressLayer = self.progressLayer, let progressPath = self.progressPath {
                 progressLayer.path = progressPath.cgPath
@@ -139,7 +139,7 @@ open class MKRefreshControl: UIControl {
                 circleView.alpha = pullDistance / self.height
                 progressLayer.strokeEnd = pullDistance / self.height * 0.9
             }
-            self.rotation = CGFloat(M_PI) * pullDistance / self.height * 0.5
+            self.rotation = .pi * pullDistance / self.height * 0.5
             circleView.transform = CGAffineTransform(rotationAngle: self.rotation)
         }
     }
@@ -200,7 +200,7 @@ open class MKRefreshControl: UIControl {
         let rotationAnim = CABasicAnimation(keyPath: "transform.rotation.z")
         rotationAnim.fromValue = 0
         rotationAnim.duration = 4
-        rotationAnim.toValue = 2 * M_PI
+        rotationAnim.toValue = 2 * Double.pi
         rotationAnim.repeatCount = Float.infinity
         rotationAnim.isRemovedOnCompletion = false
 
@@ -209,28 +209,28 @@ open class MKRefreshControl: UIControl {
         startHeadAnim.fromValue = 0
         startHeadAnim.toValue = 0.25
         startHeadAnim.duration = 1
-        startHeadAnim.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+        startHeadAnim.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
 
         let startTailAnim = CABasicAnimation(keyPath: "strokeEnd")
         startTailAnim.beginTime = 0.1
         startTailAnim.fromValue = 0
         startTailAnim.toValue = 1
         startTailAnim.duration = 1
-        startTailAnim.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+        startTailAnim.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
 
         let endHeadAnim = CABasicAnimation(keyPath: "strokeStart")
         endHeadAnim.beginTime = 1
         endHeadAnim.fromValue = 0.25
         endHeadAnim.toValue = 0.99
         endHeadAnim.duration = 0.5
-        endHeadAnim.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+        endHeadAnim.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
 
         let endTailAnim = CABasicAnimation(keyPath: "strokeEnd")
         endTailAnim.beginTime = 1
         endTailAnim.fromValue = 1
         endTailAnim.toValue = 1
         endTailAnim.duration = 0.5
-        endTailAnim.toValue = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+        endTailAnim.toValue = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
 
         let strokeAnimGroup = CAAnimationGroup()
         strokeAnimGroup.duration = 1.5
@@ -267,7 +267,7 @@ open class MKRefreshControl: UIControl {
         opacityAnimation.toValue = 0
         opacityAnimation.duration = 0.25
         opacityAnimation.isRemovedOnCompletion = false
-        opacityAnimation.fillMode = kCAFillModeForwards
+        opacityAnimation.fillMode = CAMediaTimingFillMode.forwards
 
         if let progressLayer = self.progressLayer {
             progressLayer.add(opacityAnimation, forKey: "opacity")
@@ -290,7 +290,7 @@ open class MKRefreshControl: UIControl {
         }
     }
 
-    open func handlePanGestureRecognizer() {
+    @objc open func handlePanGestureRecognizer() {
         if let parentScrollView = self.parentScrollView {
             if parentScrollView.panGestureRecognizer.state == .ended {
                 self.containingScrollViewDidEndDragging(parentScrollView)

@@ -72,7 +72,7 @@ open class MKActivityIndicator: UIView {
         self.drawableLayer.strokeColor = self.color.cgColor
         self.drawableLayer.lineWidth = self.lineWidth
         self.drawableLayer.fillColor = UIColor.clear.cgColor
-        self.drawableLayer.lineCap = kCALineJoinRound
+        self.drawableLayer.lineCap = .round
         self.drawableLayer.strokeStart = 0.99
         self.drawableLayer.strokeEnd = 1
         updateFrame()
@@ -90,7 +90,7 @@ open class MKActivityIndicator: UIView {
             arcCenter: center,
             radius: radius,
             startAngle: 0,
-            endAngle: CGFloat(2 * M_PI),
+            endAngle: 2 * .pi,
             clockwise: true)
             .cgPath
     }
@@ -101,7 +101,7 @@ open class MKActivityIndicator: UIView {
         let rotationAnim = CABasicAnimation(keyPath: "transform.rotation")
         rotationAnim.fromValue = 0
         rotationAnim.duration = 4
-        rotationAnim.toValue = 2 * M_PI
+        rotationAnim.toValue = 2 * Double.pi
         rotationAnim.repeatCount = Float.infinity
         rotationAnim.isRemovedOnCompletion = false
 
@@ -110,28 +110,28 @@ open class MKActivityIndicator: UIView {
         startHeadAnim.fromValue = 0
         startHeadAnim.toValue = 0.25
         startHeadAnim.duration = 1
-        startHeadAnim.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+        startHeadAnim.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
 
         let startTailAnim = CABasicAnimation(keyPath: "strokeEnd")
         startTailAnim.beginTime = 0.1
         startTailAnim.fromValue = 0
         startTailAnim.toValue = 1
         startTailAnim.duration = 1
-        startTailAnim.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+        startTailAnim.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
 
         let endHeadAnim = CABasicAnimation(keyPath: "strokeStart")
         endHeadAnim.beginTime = 1
         endHeadAnim.fromValue = 0.25
         endHeadAnim.toValue = 0.99
         endHeadAnim.duration = 0.5
-        endHeadAnim.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+        endHeadAnim.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
 
         let endTailAnim = CABasicAnimation(keyPath: "strokeEnd")
         endTailAnim.beginTime = 1
         endTailAnim.fromValue = 1
         endTailAnim.toValue = 1
         endTailAnim.duration = 0.5
-        endTailAnim.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+        endTailAnim.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
 
         let strokeAnimGroup = CAAnimationGroup()
         strokeAnimGroup.duration = 1.5

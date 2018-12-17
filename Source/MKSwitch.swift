@@ -379,7 +379,7 @@ open class MKSwitchLayer: CALayer {
     }
 
     fileprivate func checkPoint(_ point: CGPoint, equalTo other: CGPoint) -> Bool {
-        return fabs(point.x - other.x) <= 5 && fabs(point.y - other.y) <= 5
+        return abs(point.x - other.x) <= 5 && abs(point.y - other.y) <= 5
     }
 }
 

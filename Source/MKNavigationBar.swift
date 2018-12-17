@@ -38,7 +38,7 @@ open class MKNavigationBar: UINavigationBar {
     
     @IBInspectable open override var tintColor: UIColor! {
         didSet {
-            UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName: self.tintColor]
+            UINavigationBar.appearance().titleTextAttributes = convertToOptionalNSAttributedStringKeyDictionary([NSAttributedString.Key.foregroundColor.rawValue: self.tintColor])
             UINavigationBar.appearance().tintColor = self.tintColor
         }
     }
@@ -64,7 +64,7 @@ open class MKNavigationBar: UINavigationBar {
         UINavigationBar.appearance().barTintColor = self.color
         UINavigationBar.appearance().backgroundColor = self.tintColor
         UINavigationBar.appearance().tintColor = self.tintColor
-        UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName: self.tintColor]
+        UINavigationBar.appearance().titleTextAttributes = convertToOptionalNSAttributedStringKeyDictionary([NSAttributedString.Key.foregroundColor.rawValue: self.tintColor])
     }
     
     fileprivate func drawShadow() {
@@ -79,4 +79,10 @@ open class MKNavigationBar: UINavigationBar {
         }
     }
     
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertToOptionalNSAttributedStringKeyDictionary(_ input: [String: Any]?) -> [NSAttributedString.Key: Any]? {
+	guard let input = input else { return nil }
+	return Dictionary(uniqueKeysWithValues: input.map { key, value in (NSAttributedString.Key(rawValue: key), value)})
 }

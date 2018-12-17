@@ -20,7 +20,7 @@ open class MKSnackbar: UIControl {
     open var actionTitle: String? {
         didSet {
             if let actionButton = self.actionButton {
-                actionButton.setTitle(actionTitle, for: UIControlState())
+                actionButton.setTitle(actionTitle, for: UIControl.State())
             }
         }
     }
@@ -34,7 +34,7 @@ open class MKSnackbar: UIControl {
     open var actionTitleColor: UIColor? {
         didSet {
             if let actionButton = self.actionButton {
-                actionButton.setTitleColor(actionTitleColor, for: UIControlState())
+                actionButton.setTitleColor(actionTitleColor, for: UIControl.State())
             }
         }
     }
@@ -102,23 +102,23 @@ open class MKSnackbar: UIControl {
             textLabel.alpha = 0
             textLabel.numberOfLines = 0
             textLabel.translatesAutoresizingMaskIntoConstraints = false
-            textLabel.setContentCompressionResistancePriority(UILayoutPriorityDefaultLow,
-                for: UILayoutConstraintAxis.horizontal)
+            textLabel.setContentCompressionResistancePriority(UILayoutPriority.defaultLow,
+                for: NSLayoutConstraint.Axis.horizontal)
         }
         
         actionButton = MKButton()
         if let actionButton = actionButton {
             actionButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
-            actionButton.setTitleColor(actionTitleColor, for: UIControlState())
+            actionButton.setTitleColor(actionTitleColor, for: UIControl.State())
             actionButton.alpha = 0
             actionButton.isEnabled = false
             actionButton.translatesAutoresizingMaskIntoConstraints = false
-            actionButton.setContentHuggingPriority(UILayoutPriorityRequired,
-                for: UILayoutConstraintAxis.horizontal)
+            actionButton.setContentHuggingPriority(UILayoutPriority.required,
+                for: NSLayoutConstraint.Axis.horizontal)
             actionButton.addTarget(
                 self,
                 action: #selector(MKSnackbar.actionButtonClicked(_:)),
-                for: UIControlEvents.touchUpInside)
+                for: UIControl.Event.touchUpInside)
         }
     }
     
@@ -128,7 +128,7 @@ open class MKSnackbar: UIControl {
         MKSnackbarManager.getInstance().showSnackbar(self)
     }
     
-    open func dismiss() {
+    @objc open func dismiss() {
         if !isShowing || isAnimating {
             return
         }
@@ -142,7 +142,7 @@ open class MKSnackbar: UIControl {
             UIView.animate(
                 withDuration: 0.25,
                 delay: 0,
-                options: UIViewAnimationOptions(),
+                options: UIView.AnimationOptions(),
                 animations: {() -> Void in
                     if let textLabel = self.textLabel,
                     let actionButton = self.actionButton,
@@ -180,13 +180,13 @@ open class MKSnackbar: UIControl {
     
     open func actionButtonSelector(withTarget target: AnyObject, andAction action: Selector) {
         if let actionButton = actionButton {
-            actionButton.addTarget(target, action: action, for: UIControlEvents.touchUpInside)
+            actionButton.addTarget(target, action: action, for: UIControl.Event.touchUpInside)
         }
     }
     
     // Mark: Action
     
-    internal func actionButtonClicked(_ sender: AnyObject) {
+    @objc internal func actionButtonClicked(_ sender: AnyObject) {
         performDelegateAction(#selector(MKSnackbarDelegate.actionClicked(_:)))
         if let actionButton = actionButton {
             actionButton.isEnabled = false
@@ -215,7 +215,7 @@ open class MKSnackbar: UIControl {
             
             let labelConstraints = NSLayoutConstraint.constraints(
                 withVisualFormat: "V:|-largePadding-[label]-largePadding-|",
-                options: NSLayoutFormatOptions(rawValue: 0),
+                options: NSLayoutConstraint.FormatOptions(rawValue: 0),
                 metrics: metrics,
                 views: views
             )
@@ -224,10 +224,10 @@ open class MKSnackbar: UIControl {
             if let _ = actionTitle {
                 let centerConstraint = NSLayoutConstraint(
                     item: actionButton,
-                    attribute: NSLayoutAttribute.centerY,
-                    relatedBy: NSLayoutRelation.equal,
+                    attribute: NSLayoutConstraint.Attribute.centerY,
+                    relatedBy: NSLayoutConstraint.Relation.equal,
                     toItem: self,
-                    attribute: NSLayoutAttribute.centerY,
+                    attribute: NSLayoutConstraint.Attribute.centerY,
                     multiplier: 1,
                     constant: 0)
                 
@@ -235,14 +235,14 @@ open class MKSnackbar: UIControl {
                 
                 let horizontalContraint = NSLayoutConstraint.constraints(
                     withVisualFormat: "H:|-largePadding-[label]-largePadding-[button]-largePadding-|",
-                    options: NSLayoutFormatOptions(rawValue: 0),
+                    options: NSLayoutConstraint.FormatOptions(rawValue: 0),
                     metrics: metrics,
                     views: views)
                 self.addConstraints(horizontalContraint)
             } else {
                 let horizontalContraint = NSLayoutConstraint.constraints(
                     withVisualFormat: "H:|-largePadding-[label]-largePadding-|",
-                    options: NSLayoutFormatOptions(rawValue: 0),
+                    options: NSLayoutConstraint.FormatOptions(rawValue: 0),
                     metrics: metrics,
                     views: views)
                 self.addConstraints(horizontalContraint)
@@ -265,7 +265,7 @@ open class MKSnackbar: UIControl {
             
             let horizontalConstraints = NSLayoutConstraint.constraints(
                 withVisualFormat: "H:|-0-[view]-0-|",
-                options: NSLayoutFormatOptions(rawValue: 0),
+                options: NSLayoutConstraint.FormatOptions(rawValue: 0),
                 metrics: nil,
                 views: views)
             
@@ -273,19 +273,19 @@ open class MKSnackbar: UIControl {
             
             hiddenConstraint = NSLayoutConstraint(
                 item: self,
-                attribute: NSLayoutAttribute.top,
-                relatedBy: NSLayoutRelation.equal,
+                attribute: NSLayoutConstraint.Attribute.top,
+                relatedBy: NSLayoutConstraint.Relation.equal,
                 toItem: rootView,
-                attribute: NSLayoutAttribute.bottom,
+                attribute: NSLayoutConstraint.Attribute.bottom,
                 multiplier: 1.0,
                 constant: 0)
             
             showingConstraint = NSLayoutConstraint(
                 item: self,
-                attribute: NSLayoutAttribute.bottom,
-                relatedBy: NSLayoutRelation.equal,
+                attribute: NSLayoutConstraint.Attribute.bottom,
+                relatedBy: NSLayoutConstraint.Relation.equal,
                 toItem: rootView,
-                attribute: NSLayoutAttribute.bottom,
+                attribute: NSLayoutConstraint.Attribute.bottom,
                 multiplier: 1.0,
                 constant: 0)
             
@@ -297,7 +297,7 @@ open class MKSnackbar: UIControl {
         }
         
         if let actionTitle = actionTitle, let actionButton = actionButton {
-            actionButton.setTitle(actionTitle, for: UIControlState())
+            actionButton.setTitle(actionTitle, for: UIControl.State())
         }
     }
     
@@ -317,7 +317,7 @@ open class MKSnackbar: UIControl {
             UIView.animate(
                 withDuration: 0.25,
                 delay: 0,
-                options: UIViewAnimationOptions(),
+                options: UIView.AnimationOptions(),
                 animations: {() -> Void in
                     if let textLabel = self.textLabel,
                     let actionButton = self.actionButton,
