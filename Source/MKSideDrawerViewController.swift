@@ -15,7 +15,7 @@ public extension UIViewController {
      This is the recommended method of accessing the SideNavigationViewController
      through child UIViewControllers.
      */
-    public var sideDrawerViewController: MKSideDrawerViewController? {
+    var sideDrawerViewController: MKSideDrawerViewController? {
         var viewController: UIViewController? = self
         while viewController != nil {
             if viewController is MKSideDrawerViewController {
@@ -113,7 +113,7 @@ open class MKSideDrawerViewController: UIViewController, UIGestureRecognizerDele
 
     open var drawerState: DrawerState {
         get { return _containerView.isHidden ? .closed : .opened }
-        set { setDrawerState(drawerState, animated: false) }
+        set { setDrawerState(newValue, animated: false) }
     }
 
     @IBInspectable open var drawerWidth: CGFloat = 240 {

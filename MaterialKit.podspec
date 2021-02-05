@@ -11,7 +11,7 @@ Pod::Spec.new do |s|
   s.social_media_url   = "https://twitter.com/nghialv2607"
 
   s.platform     = :ios
-  s.ios.deployment_target = "8.0"
+  s.ios.deployment_target = "11.0"
   s.source       = { :git => "https://github.com/nghialv/MaterialKit.git", :tag => "0.4" }
 
   s.source_files  = "Source/*"
